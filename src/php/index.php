@@ -1,3 +1,8 @@
+<?php
+    require_once('./src/php/Application/DBHelper.php');
+    require_once('./src/php/Application/RecordDataHandler.php');
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
     <head>
@@ -5,89 +10,55 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Dashboard</title>
 
-        <link href="../css/bootstrap.min.dark.css" rel="stylesheet">
-        <link rel="stylesheet" href="../css/Chart.min.css">
-        <link rel="stylesheet" href="../css/custom.css">
+        <link href="./src/css/library/bootstrap.dark.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="./src/css/library/Chart.min.css">
+        <link rel="stylesheet" href="./src/css/library/bootstrap-toggle.min.css">
+        <link rel="stylesheet" href="./src/css/custom.css">
     </head>
     <body>
-        <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
-            <!-- TODO: Dynamic generation of cards -->
-            <div class="col mb-3">
-                <div class="card h-100 m-3">
-                    <div class="card-header text-center"><h5>N501</h5></div>
-                    <div class="card-body p-0">
-                        <!-- <canvas id="myChart"></canvas> -->
+        <div class="row ml-1 mt-3">
+            <div class="col-1"><input id="toggleCharts" type="checkbox" checked data-toggle="toggle" data-on="Temps réel" data-off="Graphiques" data-onstyle="info" data-offstyle="primary" onclick="toggleCharts()"></div>
+            <div class="col"></div>
+        </div>
+        <div class="row row-cols-xl-3 row-cols-lg-2 row-cols-md-2 row-cols-sm-1 row-cols-1">
+            <?php
+                $database = new DBHelper();
+                $recordDataHandler = new RecordDataHandler();
+                $arduinos = $database->getArduinos();
+                $rooms = [];
+
+                foreach($arduinos as $ardDatas) {
+                    $rooms[$ardDatas['regName']]['macAddresses'][] = $ardDatas['ardMacAddress'];
+                    $rooms[$ardDatas['regName']]['type'] = $ardDatas['regType'];
+                    $rooms[$ardDatas['regName']]['name'] = $ardDatas['regName'];
+                }
+
+                foreach($rooms as $room) {
+                    $roomRecords = $database->getRoomDatas($room['macAddresses']);
+            ?>
+                     <div class="col mb-3">
+                        <div class="card h-100 m-3" <?php if($room['type'] === 'zone') echo('style="border-style: dotted; border-color: gray; border-width: 2px;"') ?>>
+                            <div class="card-header text-center"><h5><?= $room['name']?></h5></div>
+                            <div class="card-body p-0">
+                                <?php 
+                                    include('./src/templates/_counter.php');
+                                    include('./src/templates/_graphic.php');
+                                ?>
+                            </div>   
+                        </div>
                     </div>
-                </div>
-            </div>
+            <?php
+                }
+            ?>
         </div>
     </body>
-    <script src="../js/jquery.min.js"></script>
-    <script src="../js/bootstrap.min.js"></script>
-    <!-- <script src="../js/Chart.bundle.min.js"></script>
-    <script>
-        canvas = document.getElementById('myChart').getContext("2d");
-        gradient = canvas.createLinearGradient(0, 0, 0, 250);
-        gradient.addColorStop(0, '#20aff7');
-        gradient.addColorStop(1, '#282828');
 
-        chart = new Chart(canvas, {
-            type: 'line',
-            data: {
-                datasets: [{
-                    label: 'Présence en N501',
-                    data: [{
-                        x: Date.parse('2021-02-01T08:00:00'),
-                        y: 1,
-                    }, {
-                        x: Date.parse('2021-02-01T08:30:00'),
-                        y: 120,
-                    }, {
-                        x: Date.parse('2021-02-01T09:00:00'),
-                        y: 50,
-                    }, {
-                        x: Date.parse('2021-02-01T09:30:00'),
-                        y: 0,
-                    }],
-                    backgroundColor: gradient,
-                    borderColor: '#2290c7',
-                }],
-            },
-            options: {
-                scales: {
-                    xAxes: [{
-                        type: 'time',
-                        ticks: {
-                            source: 'data',
-                        },
-                        gridLines: {
-                            display: false,
-                        },
-                        time: {
-                            unit: 'minute',
-                            displayFormats: {
-                                minute: 'H:mm'
-                            },
-                        },
-                    }],
-                    yAxes: [{
-                        gridLines: {
-                            display: true,
-                            color: '#5e5e5e'
-                        },
-                    }],
-                },
-                legend: {
-                    display: false,
-                },
-                elements: {
-                    point: {
-                        borderWidth: 2,
-                        borderColor: '#236ba6',
-                        backgroundColor: '#236ba6',
-                    },
-                },
-            },
-        });
-    </script> -->
+    <script src="./src/js/library/jquery.min.js"></script>
+    <script src="./src/js/library/bootstrap.min.js"></script>
+    <script src="./src/js/library/bootstrap-toggle.min.js"></script>
+    <script src="./src/js/library/Chart.bundle.min.js"></script>
+    <script src="./src/js/Application/graphicChart.js"></script>
+    <script src="./src/js/counterHandler.js"></script>
+    <script src="./src/js/graphicHandler.js"></script>
+    <script src="./src/js/toggleHandler.js"></script>
 </html>

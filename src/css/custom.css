@@ -14,3 +14,19 @@ body {
 .card:active {
     transform: scale(0.95);
 }
+
+.icon-primary {
+    width: 30%;
+}
+
+.icon-secondary {
+    width: 25%;
+}
+
+.count-text {
+    font-weight: 600;
+}
+
+.graphic {
+    display: none;
+}
