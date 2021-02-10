@@ -16,9 +16,5 @@ class RecordDataHandler {
     public function extractCurrentsCount($recordDatas) {
         return $this->extractEntriesCount($recordDatas) - $this->extractExitsCount($recordDatas);
     }
-
-    // public function extractChartHoursRecords($recordDatas) {
-
-    // }
 }
 ?>
