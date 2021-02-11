@@ -25,6 +25,16 @@ class DBHelper {
         return $query->fetchAll();
     }
 
+    public function getArduinosFromRoomName($regName) {
+        $instance = $this->getInstance();
+
+        $query = $instance->prepare("SELECT l.ardMacAddress FROM linkedto l JOIN t_region r ON (r.regId = l.regId) WHERE r.regName = :regName;");
+        $query->bindParam('regName', $regName);
+        $query->execute();
+
+        return $query->fetchAll();
+    }
+
     public function getRoomDatas($macAddresses) {
         $instance = $this->getInstance();
         $inQuery = implode(',', array_fill(0, count($macAddresses), '?'));

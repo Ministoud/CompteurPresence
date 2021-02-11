@@ -3,17 +3,17 @@ class GraphicChart {
     gradient;
     canvas;
 
-    constructor(canvasId, regionName, type = null, data = null, options = null) {
+    constructor(canvasId, regionName, type = null, data = null, options = null, resume = false) {
         this.canvas = document.getElementById(canvasId).getContext("2d");
 
         this.gradient = this.canvas.createLinearGradient(0, 0, 0, 250);
         this.gradient.addColorStop(0, '#20aff7');
         this.gradient.addColorStop(1, '#282828');
 
-        return this.getGraphic(regionName, type, data, options);
+        return this.getGraphic(regionName, type, data, options, resume);
     }
 
-    getGraphic(regionName, type, data, options) {
+    getGraphic(regionName, type, data, options, resume) {
         return new Chart(this.canvas, {
             type: type ?? 'line',
             data: {
@@ -34,6 +34,7 @@ class GraphicChart {
                     }],
                     backgroundColor: this.gradient,
                     borderColor: '#2290c7',
+                    lineTension: 0,
                 }],
             },
             options: options ?? {
@@ -48,7 +49,7 @@ class GraphicChart {
                         },
                         time: {
                             unit: 'minute',
-                            tooltipFormat: 'H:mm',
+                            tooltipFormat: 'H:mm:ss',
                             displayFormats: {
                                 minute: 'H:mm'
                             },
@@ -59,8 +60,23 @@ class GraphicChart {
                             display: true,
                             color: '#5e5e5e'
                         },
-                        stepSize: 1,
+                        ticks: {
+                            stepSize: 1,
+                            beginAtZero: true,
+                        },
                     }],
+                },
+				plugins: {
+                    zoom: {
+                        pan: {
+                            enabled: !resume,
+                            mode: 'xy'
+                        },
+                        zoom: {
+                            enabled: !resume,
+                            mode: 'xy',
+                        },
+                    },
                 },
                 legend: {
                     display: false,

@@ -17,7 +17,7 @@ function loadAllCharts() {
     });
 }
 
-function loadOneChart(roomData) {
+function loadOneChart(roomData, canvasId = null, resume = true) {
     $.ajax({
         url: './api/getroomrecords',
         type: 'GET',
@@ -38,7 +38,7 @@ function loadOneChart(roomData) {
                     });
                 }
             });
-            new GraphicChart(roomData[0]+'Canvas', roomData[0], 'line', data);
+            new GraphicChart(canvasId ?? roomData[0]+'Canvas', roomData[0], 'line', data, null, resume);
         }
     });
 }

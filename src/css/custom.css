@@ -30,3 +30,23 @@ body {
 .graphic {
     display: none;
 }
+
+hr {
+    background-color: dimgray;
+}
+
+.entry-color {
+    color: #77b30d !important;
+}
+
+.exit-color {
+    color: #cc0009 !important;
+}
+
+.current-color {
+    color: #9933cc !important;
+}
+
+.modal-body {
+    overflow: hidden !important;
+}

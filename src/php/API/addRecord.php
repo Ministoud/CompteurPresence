@@ -1,8 +1,8 @@
 <?php
     require('./src/php/Application/DBHelper.php');
 
-    if(!empty($_GET['recType']) && !empty($_GET['ardMacAddress'])) {
+    if(!empty($_POST['recType']) && !empty($_POST['ardMacAddress'])) {
         $database = new DBHelper;
-        $database->addRecord(date("Y-m-d H:i:s.u"), $_GET['recType'], $_GET['ardMacAddress']);
+        $database->addRecord(date("Y-m-d H:i:s.u"), $_POST['recType'], $_POST['ardMacAddress']);
     }
 ?>

@@ -10,7 +10,11 @@ Route::add('/dashboard', function() {
 });
 
 Route::add('/api/getarduinos', function() {
-    include('./src/php/API/getArduino.php');
+    include('./src/php/API/getArduinos.php');
+});
+
+Route::add('/api/getArduinosFromRegionName', function() {
+    include('./src/php/API/getArduinosFromRegionName.php');
 });
 
 Route::add('/api/getroomrecords', function() {
@@ -19,7 +23,7 @@ Route::add('/api/getroomrecords', function() {
 
 Route::add('/api/addrecord', function() {
     include('./src/php/API/addRecord.php');
-});
+}, 'post');
 
 Route::run('/ProjetPreTPI/');
 ?>
