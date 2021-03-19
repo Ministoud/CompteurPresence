@@ -20,7 +20,8 @@ CREATE TABLE t_arduino(
 CREATE TABLE t_region(
         regId   Int  Auto_increment  NOT NULL ,
         regType Varchar (50) NOT NULL ,
-        regName Varchar (50) NOT NULL 
+        regName Varchar (50) NOT NULL
+	,CONSTRAINT t_region_Idx INDEX (regName)
 	,CONSTRAINT t_region_PK PRIMARY KEY (regId)
 )ENGINE=InnoDB;
 
@@ -31,9 +32,10 @@ CREATE TABLE t_region(
 
 CREATE TABLE t_record(
         recId         Int  Auto_increment  NOT NULL ,
-        recDate       Date NOT NULL ,
+        recDate       Datetime NOT NULL ,
         recType       Varchar (50) NOT NULL ,
-        ardMacAddress Varchar (12) NOT NULL 
+        ardMacAddress Varchar (12) NOT NULL
+	,CONSTRAINT t_record_Idx INDEX (recType)
 	,CONSTRAINT t_record_PK PRIMARY KEY (recId)
 
 	,CONSTRAINT t_record_t_arduino_FK FOREIGN KEY (ardMacAddress) REFERENCES t_arduino(ardMacAddress)
@@ -53,5 +55,3 @@ CREATE TABLE linkedTo(
 	,CONSTRAINT linkedTo_t_arduino0_FK FOREIGN KEY (ardMacAddress) REFERENCES t_arduino(ardMacAddress)
 )ENGINE=InnoDB;
 
-CREATE INDEX t_record_Idx ON t_record(recType);
-CREATE INDEX t_region_Idx ON t_region(regName);
